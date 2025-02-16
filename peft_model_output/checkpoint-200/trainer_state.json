@@ -12,7 +12,7 @@
       "epoch": 0.04,
       "grad_norm": NaN,
       "learning_rate": 4.000000000000001e-06,
-      "loss": 0.0,
+      "loss": 7.7804,
       "step": 10
     },
     {
@@ -81,9 +81,9 @@
     {
       "epoch": 0.4,
       "eval_loss": NaN,
-      "eval_runtime": 5.2346,
-      "eval_samples_per_second": 19.104,
-      "eval_steps_per_second": 2.483,
+      "eval_runtime": 5.3095,
+      "eval_samples_per_second": 18.834,
+      "eval_steps_per_second": 2.448,
       "step": 100
     },
     {
@@ -159,9 +159,9 @@
     {
       "epoch": 0.8,
       "eval_loss": NaN,
-      "eval_runtime": 4.7709,
-      "eval_samples_per_second": 20.96,
-      "eval_steps_per_second": 2.725,
+      "eval_runtime": 5.401,
+      "eval_samples_per_second": 18.515,
+      "eval_steps_per_second": 2.407,
       "step": 200
     }
   ],
