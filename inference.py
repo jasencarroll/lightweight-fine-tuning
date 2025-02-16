@@ -1,7 +1,25 @@
-from transformers import AutoTokenizer, AutoModelForCausalLM, AutoConfig
+from transformers import AutoTokenizer, AutoModelForCausalLM
 from peft import AutoPeftModelForCausalLM
 import torch
-device = torch.device('cpu')  # Force CPU usage
+
+# Helper function to ensure tensors are on the correct device
+def to_device(batch, device):
+    """
+    Moves all tensors in a batch to specified device
+    
+    Args:
+        batch (dict): Dictionary of input tensors
+        device (str): Target device ('cuda' or 'cpu')
+    
+    Returns:
+        dict: Batch with all tensors moved to specified device
+    """
+    return {k: v.to(device) for k, v in batch.items() if isinstance(v, torch.Tensor)}
+
+# Set device and enable cuda optimizations
+device = "cuda" if torch.cuda.is_available() else "cpu"
+if device == "cuda":
+    torch.backends.cudnn.benchmark = True
 
 # Initialize tokenizer with proper settings
 # We need to ensure special tokens are handled correctly
@@ -27,11 +45,13 @@ model.eval()
 
 lora_model = AutoPeftModelForCausalLM.from_pretrained(
     "gpt2-lora",  # Your PEFT model path
-    device_map={"": device},  # Force CPU usage
-    torch_dtype=torch.float16  # Use float16 for efficiency
+    device_map="auto", # Automatically map to available devices
 )
 # Set the model to evaluation mode
 lora_model.eval()
+
+model = model.to(device)
+lora_model = lora_model.to(device)
 
 # Prepare input text with proper formatting
 input_text = "Hello, my name is "  # Your prompt
@@ -45,6 +65,10 @@ inputs = tokenizer(
     max_length=512,  # Adjust based on your needs
     add_special_tokens=True  # Ensure special tokens are added
 )
+
+# Move inputs to correct device
+inputs = to_device(inputs, device)
+
 # Generate text with better controlled parameters
 outputs = model.generate(
     input_ids=inputs["input_ids"],
@@ -67,6 +91,8 @@ generated_text = tokenizer.batch_decode(
     skip_special_tokens=True,  # Remove special tokens
     clean_up_tokenization_spaces=True  # Clean up spaces
 )
+
+print("GPT-2 Generated text:", generated_text[0])
 
 # Generate text with better controlled parameters
 outputs = lora_model.generate(
@@ -91,4 +117,4 @@ generated_text = tokenizer.batch_decode(
     clean_up_tokenization_spaces=True  # Clean up spaces
 )
 
-print("Generated text:", generated_text[0])
+print("LoRA GPT-2 Generated text:", generated_text[0])
