@@ -1,7 +1,7 @@
 {
   "alpha_pattern": {},
   "auto_mapping": null,
-  "base_model_name_or_path": "openai-community/gpt2",
+  "base_model_name_or_path": "gpt2",
   "bias": "none",
   "eva_config": null,
   "exclude_modules": null,
@@ -23,9 +23,9 @@
   "rank_pattern": {},
   "revision": null,
   "target_modules": [
+    "c_fc",
     "c_proj",
-    "c_attn",
-    "c_fc"
+    "c_attn"
   ],
   "task_type": "CAUSAL_LM",
   "use_dora": false,

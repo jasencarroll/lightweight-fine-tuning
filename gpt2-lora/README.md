@@ -1,5 +1,5 @@
 ---
-base_model: openai-community/gpt2
+base_model: gpt2
 library_name: peft
 ---
 
